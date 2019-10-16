@@ -126,7 +126,7 @@ console.log('node by key ',this.findNodeByKey(newNodes, separado[0]+'-'+separado
                 </div>
 
                 <div className="content-section implementation treetableedit-demo">
-                    <TreeTable value={this.state.nodes} key={key} expandedKeys={this.state.expandedKeys} onToggle={e => this.setState({expandedKeys: e.value})} 
+                    <TreeTable value={this.state.nodes} expandedKeys={this.state.expandedKeys} onToggle={e => this.setState({expandedKeys: e.value})} 
                     onRowClick={this.selectRow} >
                         <Column field="grupoccconta" header="Grupo / CC / Conta" expander style={{backgroundColor:"#e6e6e6"}}   ></Column>
                         <Column field="item" header="Item" ></Column>
