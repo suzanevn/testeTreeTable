@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 //import ContentWrapper from '../Layout/ContentWrapper';
 //import { Container} from 'reactstrap';
 //import ReactDataGrid from 'react-data-grid';
-import { NodeService } from 'C:/workspace/angle4-0/reactjs/src/service/NodeService';
+import { NodeService } from '../../service/NodeService'
 import { InputText } from 'primereact/inputtext';
 import { TreeTable } from 'primereact/treetable';
 import { Column } from "primereact/column";
@@ -16,7 +16,8 @@ class DataGrid extends Component {
             count: 0,
             nodes: [],
             expandedKeys:{},
-            corFundo:''
+            corFundo:'',
+            key: 'key'
         };
         this.nodeservice = new NodeService();
 
@@ -100,9 +101,9 @@ console.log('node by key ',this.findNodeByKey(newNodes, separado[0]+'-'+separado
         return value && value.length > 0;
     }
 
-    rowClassName(node) {    
-        console.log('node',node)    
-        return {'p-highlight' : (node.children )};
+    rowClassName (node) {
+        let keys = node.key.split('-')
+        return { 'bg-info': (node.key.length == 1), 'bg-primary': (node.key.length == 3), 'p-highlight': (node.key.length == 5)  }
     }
     
     selectRow(node) {    
@@ -126,14 +127,14 @@ console.log('node by key ',this.findNodeByKey(newNodes, separado[0]+'-'+separado
                 </div>
 
                 <div className="content-section implementation treetableedit-demo">
-                    <TreeTable value={this.state.nodes} key={key} expandedKeys={this.state.expandedKeys} onToggle={e => this.setState({expandedKeys: e.value})} 
-                    onRowClick={this.selectRow} >
-                        <Column field="grupoccconta" header="Grupo / CC / Conta" expander style={{backgroundColor:"#e6e6e6"}}   ></Column>
-                        <Column field="item" header="Item" ></Column>
-                        <Column field="jan" header="Jan" ></Column>
-                        <Column field="janalt" header="Jan Aterado" editor={this.valueEditor} style={{backgroundColor:this.state.corFundo}} ></Column>
-                        <Column field="fev" header="Fev" ></Column>
-                        <Column field="fevalt" header="Fev Aterado" editor={this.valueEditor} ></Column>
+                    <TreeTable value={this.state.nodes} key={this.state.key} expandedKeys={this.state.expandedKeys} onToggle={e => this.setState({expandedKeys: e.value})}
+                    onRowClick={this.selectRow} rowClassName={this.rowClassName} >
+                        <Column field="grupoccconta" header="Grupo / CC / Conta" expander    />
+                        <Column field="item" header="Item" />
+                        <Column field="jan" header="Jan" />
+                        <Column field="janalt" header="Jan Aterado" editor={this.valueEditor}  />
+                        <Column field="fev" header="Fev" />
+                        <Column field="fevalt" header="Fev Aterado" editor={this.valueEditor} />
                     </TreeTable>
                 </div>
             </div>

@@ -4,8 +4,7 @@
         {
             "key": "0",
             "expanded": true,
-            "className":"p-highlight",
-            "data":{  
+            "data":{
                 "grupoccconta":"Grupo1",
                 "item":"",
                 "jan":300,
