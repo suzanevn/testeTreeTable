@@ -44,8 +44,7 @@
                                         "janalt":4,
                                         "fev":1,
                                         "fevalt":2,
-                                        "corFundo": "#e6e6e6",
-                                        "alterado":false
+                                        "status":""
                                     }
                                 },
                                 {  
@@ -57,8 +56,7 @@
                                         "janalt":60,
                                         "fev":70,
                                         "fevalt":80,
-                                        "corFundo": "#e6e6e6",
-                                        "alterado":false
+                                        "status":""
                                     }
                                 }
                             ]
@@ -111,7 +109,7 @@
                                         "janalt":25,
                                         "fev":45,
                                         "fevalt":45,
-                                        "corFundo": "#bfbfbf"
+                                        "status":""
                                     }
                                 },
                                 {  
@@ -123,7 +121,7 @@
                                         "janalt":25,
                                         "fev":35,
                                         "fevalt":45,
-                                        "corFundo": "#bfbfbf"
+                                        "status":""
                                     }
                                 }
                             ]

@@ -6,6 +6,8 @@ import { NodeService } from '../../service/NodeService';
 import { InputText } from 'primereact/inputtext';
 import { TreeTable } from 'primereact/treetable';
 import { Column } from "primereact/column";
+import { Button, ButtonGroup, Dropdown, DropdownToggle,  DropdownMenu, DropdownItem } from 'reactstrap';
+import { translate, Trans } from 'react-i18next';
 
 class DataGrid extends Component {
     constructor(props, context) {
@@ -15,38 +17,38 @@ class DataGrid extends Component {
         this.state = {
             count: 0,
             nodes: [],
-            expandedKeys:{},
-            corFundo:''
+            expandedKeys: {},
+            dropdownOpen: false
         };
         this.nodeservice = new NodeService();
 
-        //this.sizeEditor = this.sizeEditor.bind(this);
         this.valueEditor = this.valueEditor.bind(this);
         this.requiredValidator = this.requiredValidator.bind(this);
         this.rowClassName = this.rowClassName.bind(this);
-        this.selectRow = this.selectRow.bind(this);
+        this.onRefreshStatus = this.onRefreshStatus.bind(this);
     }
 
     componentDidMount() {
         this.nodeservice.getTreeTableNodes().then(data => this.setState({ nodes: data }));
-        let expandedKeys = {...this.state.expandedKeys};
+        let expandedKeys = { ...this.state.expandedKeys };
+        //expande as colunas
         expandedKeys['0'] = true
         expandedKeys['1'] = true
         expandedKeys['0-0'] = true
         expandedKeys['1-0'] = true
         expandedKeys['0-0-0'] = true
         expandedKeys['1-0-0'] = true
-        this.setState({expandedKeys: expandedKeys});
+        this.setState({ expandedKeys: expandedKeys });
     }
 
     onEditorValueChange(props, value) {
 
         console.log('change props node data', props.node.data, 'new value', value)
-         let valueAnt=props.node.data[props.field];
-
+        let valueAnt = props.node.data[props.field];
+        //busca o no pai e altera o total
         let noPai = this.findNodeByKey(this.state.nodes, props.node.key.split('-')[0])
-        console.log('props field',props.field,'no pai', noPai, 'total',props.node.data[props.field], 'valant', valueAnt, 'valatual',value)
-        noPai.data[props.field] = noPai.data[props.field]-parseInt(valueAnt,10)+parseInt(value,10)
+        console.log('props field', props.field, 'no pai', noPai, 'total', props.node.data[props.field], 'valant', valueAnt, 'valatual', value)
+        noPai.data[props.field] = noPai.data[props.field] - parseInt(valueAnt, 10) + parseInt(value, 10)
         //console.log('calculo',parseInt(noPai.data.total)-parseInt(valueAnt)+parseInt(value))
 
 
@@ -54,8 +56,8 @@ class DataGrid extends Component {
         //console.log('newnodes ', newNodes)
         let editedNode = this.findNodeByKey(newNodes, props.node.key);
         editedNode.data[props.field] = value;
-        editedNode.data.alterado = true
-//console.log('node by key ',this.findNodeByKey(newNodes, separado[0]+'-'+separado[1]+'-'+separado[2]))
+        editedNode.data.status = 'alterado'
+        //console.log('node by key ',this.findNodeByKey(newNodes, separado[0]+'-'+separado[1]+'-'+separado[2]))
         //console.log('children ',newNodes[separado[0]].children[separado[1]])
 
         this.setState({
@@ -79,19 +81,15 @@ class DataGrid extends Component {
         this.rowClassName(props.node)
         return (
             <InputText type="text" value={props.node.data[field]}
-            onChange={(e) => this.onEditorValueChange(props, e.target.value)} />
-                );
+                onChange={(e) => this.onEditorValueChange(props, e.target.value)} />
+        );
     }
-        
-    // sizeEditor(props) {
-    //     return this.inputTextEditor(props, 'total');
-    // }
-    
+
     //se não for nó do item não deixa aparecer o input para editar
     valueEditor(props) {
-        console.log('value editor',props.node.data.corFundo)
+        //console.log('value editor', props.node.data.corFundo)
         let separado = props.node.key.split('-')
-        if(separado.length>=4){
+        if (separado.length >= 4) {
             return this.inputTextEditor(props, props.field);
         }
     }
@@ -102,35 +100,56 @@ class DataGrid extends Component {
         return value && value.length > 0;
     }
 
-    rowClassName(node) {    
-        //console.log('node',node)    
-        //return {'p-highlight' : (node.children )};
+    rowClassName(node) {
         let keys = node.key.split('-')
-        console.log('keys ', keys,node.key)
-        return { 'bg-info': (keys.length === 1), 'bg-primary': (keys.length === 2), 'p-highlight': (keys.length === 3) , 'bg-yellow':node.data.alterado }
-    }
-    
-    selectRow(node) {    
-        console.log('node select row',node)    
-        console.log('props',this.state.props)
-        
-       // let keys = node.key.split('-')
-        return { 'bg-yellow':true }
-
-        // this.setState({
-        //     corFundo:'#e6e6e6'
-        // });
-        // console.log('state cor',this.state.corFundo)
+        console.log('status', node.data.status)
+        return {
+            'bg-info-dark': (keys.length === 1), 'bg-info': (keys.length === 2), 'bg-info-light': (keys.length === 3),
+            'bg-yellow': node.data.status === 'alterado', 'bg-success':node.data.status==='confirmed', 'bg-danger':node.data.status==='rejected'
+        }
     }
 
-    sizeTemplate(node) {
-        console.log('size template*****************',node)
-        return {backgroundColor:'#e6e6e6'};
+    onRefreshStatus(props, value) {
+        let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
+        let editedNode = this.findNodeByKey(newNodes, props.node.key);
+        editedNode.data.status = value
+        this.setState({
+            nodes: newNodes
+        });
+        this.rowClassName(props)
     }
+
+    // sizeTemplate(node) {
+    //     console.log('size template*****************', node)
+    //     return { backgroundColor: '#e6e6e6' };
+    // }
     //<div style={this.sizeTemplate}></div>
 
+    actionTemplate(node, column) {
+        let keys = node.key.split('-')
+        return <div hidden={keys.length<4}  >
+            <ButtonGroup>
+                <Button color="success" className="btn-labeled" > 
+                {/* onClick={(e) => this.onRefreshStatus(node, 'confirmed')} */}
+                    <span className="btn-md"><i className="fa fa-check"></i></span></Button>
+                <Button color="danger" className="btn-labeled" >
+                    <span className="btn-md"><i className="fa fa-times"></i></span></Button>
+            </ButtonGroup>
+        </div>;
+    }
+
+    changeLanguage = lng => {
+        this.props.i18n.changeLanguage(lng);
+    }
+
+    toggle = () => {
+        this.setState({
+            dropdownOpen: !this.state.dropdownOpen
+        });
+    }
+
     render() {
-       // let style={backgroundColor:'#ffffb3'}
+        // let style={backgroundColor:'#ffffb3'}
         return (
             <div className="App">
 
@@ -140,22 +159,40 @@ class DataGrid extends Component {
                         <p>Incell editing provides a quick and user friendly way to manipulate data.</p>
                     </div>
                 </div>
-                <div className="content-section implementation card-default">
-                    <TreeTable value={this.state.nodes} expandedKeys={this.state.expandedKeys} tableClassName="table table-bordered"
-                    rowClassName={this.rowClassName} scrollable onToggle={e => this.setState({expandedKeys: e.value})} 
-                    onRowClick={this.selectRow} responsive={true}>
-                        <Column field="grupoccconta" header="Grupo / CC / Conta" expander style={{width:'200px'}} />
-                        <Column field="item" header="Item" style={{width:'70px'}}/>
-                        <Column field="jan" header="Jan" style={{width:'70px'}}/>
-                        <Column field="janalt" header="Jan Aterado" editor={e => this.valueEditor(e)} style={{width:'70px'}} />
-                        <Column field="fev" header="Fev" style={{width:'70px'}}/>
-                        <Column field="fevalt" header="Fev Aterado" editor={this.valueEditor} style={{width:'70px'}}/>
+                <div className="table table-bordered content-section implementation">
+                    <TreeTable value={this.state.nodes} expandedKeys={this.state.expandedKeys} tableClassName="table"
+                        rowClassName={this.rowClassName} scrollable onToggle={e => this.setState({ expandedKeys: e.value })}
+                        responsive>
+                        <Column field="grupoccconta" header="Grupo / CC / Conta" expander style={{ width: '200px' }} />
+                        <Column field="item" header="Item" style={{ width: '70px' }} />
+                        <Column field="jan" header="Jan" style={{ width: '70px' }} />
+                        <Column field="janalt" header="Jan Aterado" editor={e => this.valueEditor(e)} style={{ width: '70px' }} />
+                        <Column field="fev" header="Fev" style={{ width: '70px' }} />
+                        <Column field="fevalt" header="Fev Aterado" editor={this.valueEditor} style={{ width: '70px' }} />
+                        <Column body={this.actionTemplate} style={{ textAlign: 'center', width: '8em' }} />
                     </TreeTable>
+                    <div className="content-heading">
+                    {/* <div>Dashboard
+                        <small><Trans i18nKey='dashboard.WELCOME'></Trans></small>
+                    </div> */}
+                    { /* START Language list */ }
+                    {/* <div className="ml-auto">
+                        <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                            <DropdownToggle>
+                                English
+                            </DropdownToggle>
+                            <DropdownMenu className="dropdown-menu-right-forced animated fadeInUpShort">
+                                <DropdownItem onClick={() => this.changeLanguage('en')}>English</DropdownItem>
+                                <DropdownItem onClick={() => this.changeLanguage('es')}>Spanish</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                    </div> */}
+                    { /* END Language list */ }
+                    </div>
                 </div>
             </div>
         )
     }
 }
-//style={{backgroundColor: 'red' }}
-//style={{backgroundColor: e => e.node.data.corFundo}}
+
 export default DataGrid;
