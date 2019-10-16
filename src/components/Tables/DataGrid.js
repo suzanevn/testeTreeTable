@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 //import ContentWrapper from '../Layout/ContentWrapper';
 //import { Container} from 'reactstrap';
 //import ReactDataGrid from 'react-data-grid';
-import { NodeService } from '../../service/NodeService'
+import { NodeService } from '../../service/NodeService';
 import { InputText } from 'primereact/inputtext';
 import { TreeTable } from 'primereact/treetable';
 import { Column } from "primereact/column";
@@ -16,8 +16,7 @@ class DataGrid extends Component {
             count: 0,
             nodes: [],
             expandedKeys:{},
-            corFundo:'',
-            key: 'key'
+            corFundo:''
         };
         this.nodeservice = new NodeService();
 
@@ -41,23 +40,23 @@ class DataGrid extends Component {
     }
 
     onEditorValueChange(props, value) {
-        console.log('change props node data size', props.node.data.size, 'new value', value)
-         //let valueAnt=props.node.data.total;
-//console.log('props', props, field)
-        let separado = props.node.key.split('-')
-        //console.log('node',props.node,'splitttttttt',separado)
+
+        console.log('change props node data', props.node.data, 'new value', value)
+         let valueAnt=props.node.data[props.field];
+
         let noPai = this.findNodeByKey(this.state.nodes, props.node.key.split('-')[0])
-        console.log('no pai', noPai)
-        console.log('props node data total',props.node.data.total)
+        console.log('props field',props.field,'no pai', noPai, 'total',props.node.data[props.field], 'valant', valueAnt, 'valatual',value)
+        noPai.data[props.field] = noPai.data[props.field]-parseInt(valueAnt,10)+parseInt(value,10)
         //console.log('calculo',parseInt(noPai.data.total)-parseInt(valueAnt)+parseInt(value))
 
 
         let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
-        console.log('newnodes ', newNodes)
+        //console.log('newnodes ', newNodes)
         let editedNode = this.findNodeByKey(newNodes, props.node.key);
         editedNode.data[props.field] = value;
-console.log('node by key ',this.findNodeByKey(newNodes, separado[0]+'-'+separado[1]+'-'+separado[2]))
-        console.log('children ',newNodes[separado[0]].children[separado[1]])
+        editedNode.data.alterado = true
+//console.log('node by key ',this.findNodeByKey(newNodes, separado[0]+'-'+separado[1]+'-'+separado[2]))
+        //console.log('children ',newNodes[separado[0]].children[separado[1]])
 
         this.setState({
             nodes: newNodes
@@ -77,6 +76,7 @@ console.log('node by key ',this.findNodeByKey(newNodes, separado[0]+'-'+separado
     }
 
     inputTextEditor(props, field) {
+        this.rowClassName(props.node)
         return (
             <InputText type="text" value={props.node.data[field]}
             onChange={(e) => this.onEditorValueChange(props, e.target.value)} />
@@ -89,6 +89,7 @@ console.log('node by key ',this.findNodeByKey(newNodes, separado[0]+'-'+separado
     
     //se não for nó do item não deixa aparecer o input para editar
     valueEditor(props) {
+        console.log('value editor',props.node.data.corFundo)
         let separado = props.node.key.split('-')
         if(separado.length>=4){
             return this.inputTextEditor(props, props.field);
@@ -101,21 +102,35 @@ console.log('node by key ',this.findNodeByKey(newNodes, separado[0]+'-'+separado
         return value && value.length > 0;
     }
 
-    rowClassName (node) {
+    rowClassName(node) {    
+        //console.log('node',node)    
+        //return {'p-highlight' : (node.children )};
         let keys = node.key.split('-')
-        return { 'bg-info': (node.key.length == 1), 'bg-primary': (node.key.length == 3), 'p-highlight': (node.key.length == 5)  }
+        console.log('keys ', keys,node.key)
+        return { 'bg-info': (keys.length === 1), 'bg-primary': (keys.length === 2), 'p-highlight': (keys.length === 3) , 'bg-yellow':node.data.alterado }
     }
     
     selectRow(node) {    
         console.log('node select row',node)    
         console.log('props',this.state.props)
-        this.setState({
-            corFundo:'#e6e6e6'
-        });
-        console.log('state cor',this.state.corFundo)
+        
+       // let keys = node.key.split('-')
+        return { 'bg-yellow':true }
+
+        // this.setState({
+        //     corFundo:'#e6e6e6'
+        // });
+        // console.log('state cor',this.state.corFundo)
     }
 
+    sizeTemplate(node) {
+        console.log('size template*****************',node)
+        return {backgroundColor:'#e6e6e6'};
+    }
+    //<div style={this.sizeTemplate}></div>
+
     render() {
+       // let style={backgroundColor:'#ffffb3'}
         return (
             <div className="App">
 
@@ -125,16 +140,16 @@ console.log('node by key ',this.findNodeByKey(newNodes, separado[0]+'-'+separado
                         <p>Incell editing provides a quick and user friendly way to manipulate data.</p>
                     </div>
                 </div>
-
-                <div className="content-section implementation treetableedit-demo">
-                    <TreeTable value={this.state.nodes} key={this.state.key} expandedKeys={this.state.expandedKeys} onToggle={e => this.setState({expandedKeys: e.value})}
-                    onRowClick={this.selectRow} rowClassName={this.rowClassName} >
-                        <Column field="grupoccconta" header="Grupo / CC / Conta" expander    />
-                        <Column field="item" header="Item" />
-                        <Column field="jan" header="Jan" />
-                        <Column field="janalt" header="Jan Aterado" editor={this.valueEditor}  />
-                        <Column field="fev" header="Fev" />
-                        <Column field="fevalt" header="Fev Aterado" editor={this.valueEditor} />
+                <div className="content-section implementation card-default">
+                    <TreeTable value={this.state.nodes} expandedKeys={this.state.expandedKeys} tableClassName="table table-bordered"
+                    rowClassName={this.rowClassName} scrollable onToggle={e => this.setState({expandedKeys: e.value})} 
+                    onRowClick={this.selectRow} responsive={true}>
+                        <Column field="grupoccconta" header="Grupo / CC / Conta" expander style={{width:'200px'}} />
+                        <Column field="item" header="Item" style={{width:'70px'}}/>
+                        <Column field="jan" header="Jan" style={{width:'70px'}}/>
+                        <Column field="janalt" header="Jan Aterado" editor={e => this.valueEditor(e)} style={{width:'70px'}} />
+                        <Column field="fev" header="Fev" style={{width:'70px'}}/>
+                        <Column field="fevalt" header="Fev Aterado" editor={this.valueEditor} style={{width:'70px'}}/>
                     </TreeTable>
                 </div>
             </div>
@@ -142,4 +157,5 @@ console.log('node by key ',this.findNodeByKey(newNodes, separado[0]+'-'+separado
     }
 }
 //style={{backgroundColor: 'red' }}
+//style={{backgroundColor: e => e.node.data.corFundo}}
 export default DataGrid;

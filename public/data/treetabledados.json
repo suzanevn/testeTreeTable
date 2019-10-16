@@ -8,9 +8,9 @@
                 "grupoccconta":"Grupo1",
                 "item":"",
                 "jan":300,
-                "janalt":400,
+                "janalt":64,
                 "fev":100,
-                "fevalt":200
+                "fevalt":82
             },
             "children":[  
                 {  
@@ -44,7 +44,8 @@
                                         "janalt":4,
                                         "fev":1,
                                         "fevalt":2,
-                                        "corFundo": "#e6e6e6"
+                                        "corFundo": "#e6e6e6",
+                                        "alterado":false
                                     }
                                 },
                                 {  
@@ -56,7 +57,8 @@
                                         "janalt":60,
                                         "fev":70,
                                         "fevalt":80,
-                                        "corFundo": "#e6e6e6"
+                                        "corFundo": "#e6e6e6",
+                                        "alterado":false
                                     }
                                 }
                             ]
@@ -69,14 +71,13 @@
         {
             "key": "1",
             "expanded": true,
-            "className":"p-highlight",
             "data":{  
                 "grupoccconta":"Grupo2",
                 "item":"",
                 "jan":95,
-                "janalt":45,
+                "janalt":50,
                 "fev":15,
-                "fevalt":25
+                "fevalt":90
             },
             "children":[  
                 {  
