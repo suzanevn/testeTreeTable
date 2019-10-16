@@ -1,0 +1,137 @@
+{
+    "root":
+    [  
+        {
+            "key": "0",
+            "expanded": true,
+            "className":"p-highlight",
+            "data":{  
+                "grupoccconta":"Grupo1",
+                "item":"",
+                "jan":300,
+                "janalt":400,
+                "fev":100,
+                "fevalt":200
+            },
+            "children":[  
+                {  
+                    "key": "0-0",
+                    "data":{
+                        "grupoccconta":"CTR001",
+                        "item":"",
+                        "jan":"",
+                        "janalt":"",
+                        "fev":"",
+                        "fevalt":""
+                    },
+                    "children":[  
+                        {  
+                            "key": "0-0-0",
+                            "data":{
+                                "grupoccconta":"C1010",
+                                "item":"",
+                                "jan":"",
+                                "janalt":"",
+                                "fev":"",
+                                "fevalt":""
+                            },
+                            "children":[  
+                                {  
+                                    "key": "0-0-0-0",
+                                    "data":{  
+                                        "grupoccconta":"",
+                                        "item":"Item1",
+                                        "jan":3,
+                                        "janalt":4,
+                                        "fev":1,
+                                        "fevalt":2,
+                                        "corFundo": "#e6e6e6"
+                                    }
+                                },
+                                {  
+                                    "key": "0-0-0-1",
+                                    "data":{  
+                                        "grupoccconta":"",
+                                        "item":"Item2",
+                                        "jan":50,
+                                        "janalt":60,
+                                        "fev":70,
+                                        "fevalt":80,
+                                        "corFundo": "#e6e6e6"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]      
+            
+        },
+        {
+            "key": "1",
+            "expanded": true,
+            "className":"p-highlight",
+            "data":{  
+                "grupoccconta":"Grupo2",
+                "item":"",
+                "jan":95,
+                "janalt":45,
+                "fev":15,
+                "fevalt":25
+            },
+            "children":[  
+                {  
+                    "key": "1-0",
+                    "data":{
+                        "grupoccconta":"CTR002",
+                        "item":"",
+                        "jan":"",
+                        "janalt":"",
+                        "fev":"",
+                        "fevalt":""
+                    },
+                    "children":[  
+                        {  
+                            "key": "1-0-0",
+                            "data":{
+                                "grupoccconta":"C2020",
+                                "item":"",
+                                "jan":"",
+                                "janalt":"",
+                                "fev":"",
+                                "fevalt":""
+                            },
+                            "children":[  
+                                {  
+                                    "key": "1-0-0-0",
+                                    "data":{  
+                                        "grupoccconta":"",
+                                        "item":"Item1",
+                                        "jan":25,
+                                        "janalt":25,
+                                        "fev":45,
+                                        "fevalt":45,
+                                        "corFundo": "#bfbfbf"
+                                    }
+                                },
+                                {  
+                                    "key": "1-0-0-1",
+                                    "data":{  
+                                        "grupoccconta":"",
+                                        "item":"Item2",
+                                        "jan":15,
+                                        "janalt":25,
+                                        "fev":35,
+                                        "fevalt":45,
+                                        "corFundo": "#bfbfbf"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]      
+            
+        }
+    ]
+}
