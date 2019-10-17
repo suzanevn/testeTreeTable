@@ -74,6 +74,7 @@
                                         "novalt":64,
                                         "dez":300,
                                         "dezalt":64,
+                                        "justificativa":"",
                                         "status":""
                                     }
                                 },
@@ -106,6 +107,7 @@
                                         "novalt":64,
                                         "dez":300,
                                         "dezalt":64,
+                                        "justificativa":"",
                                         "status":""
                                     }
                                 }
@@ -189,6 +191,7 @@
                                         "novalt":64,
                                         "dez":300,
                                         "dezalt":64,
+                                        "justificativa":"",
                                         "status":""
                                     }
                                 },
@@ -221,6 +224,7 @@
                                         "novalt":64,
                                         "dez":300,
                                         "dezalt":64,
+                                        "justificativa":"",
                                         "status":""
                                     }
                                 }
@@ -304,6 +308,7 @@
                                         "novalt":64,
                                         "dez":300,
                                         "dezalt":64,
+                                        "justificativa":"",
                                         "status":""
                                     }
                                 },
@@ -336,6 +341,7 @@
                                         "novalt":64,
                                         "dez":300,
                                         "dezalt":64,
+                                        "justificativa":"",
                                         "status":""
                                     }
                                 }
@@ -419,6 +425,7 @@
                                         "novalt":64,
                                         "dez":300,
                                         "dezalt":64,
+                                        "justificativa":"",
                                         "status":""
                                     }
                                 },
@@ -451,6 +458,7 @@
                                         "novalt":64,
                                         "dez":300,
                                         "dezalt":64,
+                                        "justificativa":"",
                                         "status":""
                                     }
                                 }
@@ -534,6 +542,7 @@
                                         "novalt":64,
                                         "dez":300,
                                         "dezalt":64,
+                                        "justificativa":"",
                                         "status":""
                                     }
                                 },
@@ -566,6 +575,7 @@
                                         "novalt":64,
                                         "dez":300,
                                         "dezalt":64,
+                                        "justificativa":"",
                                         "status":""
                                     }
                                 }

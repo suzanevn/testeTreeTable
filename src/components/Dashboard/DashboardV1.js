@@ -89,6 +89,7 @@ class DashboardV1 extends Component {
     }
 
     changeLanguage = lng => {
+        console.log('prooooooooops ',this.props)
         this.props.i18n.changeLanguage(lng);
     }
 
