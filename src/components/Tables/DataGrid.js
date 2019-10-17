@@ -6,8 +6,9 @@ import { NodeService } from '../../service/NodeService';
 import { InputText } from 'primereact/inputtext';
 import { TreeTable } from 'primereact/treetable';
 import { Column } from "primereact/column";
-import { Button, ButtonGroup, Dropdown, DropdownToggle,  DropdownMenu, DropdownItem } from 'reactstrap';
-import { translate, Trans } from 'react-i18next';
+import { Button, ButtonGroup } from 'reactstrap';
+//, Dropdown, DropdownToggle,  DropdownMenu, DropdownItem
+//import { Trans } from 'react-i18next';
 
 class DataGrid extends Component {
     constructor(props, context) {
@@ -34,10 +35,19 @@ class DataGrid extends Component {
         //expande as colunas
         expandedKeys['0'] = true
         expandedKeys['1'] = true
+        expandedKeys['2'] = true
+        expandedKeys['3'] = true
+        expandedKeys['4'] = true
         expandedKeys['0-0'] = true
         expandedKeys['1-0'] = true
+        expandedKeys['2-0'] = true
+        expandedKeys['3-0'] = true
+        expandedKeys['4-0'] = true
         expandedKeys['0-0-0'] = true
         expandedKeys['1-0-0'] = true
+        expandedKeys['2-0-0'] = true
+        expandedKeys['3-0-0'] = true
+        expandedKeys['4-0-0'] = true
         this.setState({ expandedKeys: expandedKeys });
     }
 
@@ -96,27 +106,26 @@ class DataGrid extends Component {
 
     requiredValidator(props) {
         let value = props.node.data[props.field];
-
         return value && value.length > 0;
     }
 
     rowClassName(node) {
         let keys = node.key.split('-')
-        console.log('status', node.data.status)
+        console.log('row class name status', node.data.status)
         return {
-            'bg-info-dark': (keys.length === 1), 'bg-info': (keys.length === 2), 'bg-info-light': (keys.length === 3),
-            'bg-yellow': node.data.status === 'alterado', 'bg-success':node.data.status==='confirmed', 'bg-danger':node.data.status==='rejected'
+            'bg-gray': (keys.length === 1), 'bg-gray-light': (keys.length === 2), 'bg-gray-lighter': (keys.length === 3),
+            'bg-yellow-light': node.data.status === 'alterado', 'bg-success-light':node.data.status==='confirmed', 'bg-danger-light':node.data.status==='rejected'
         }
     }
 
     onRefreshStatus(props, value) {
+        console.log('on refresh',props,value)
         let newNodes = JSON.parse(JSON.stringify(this.state.nodes));
-        let editedNode = this.findNodeByKey(newNodes, props.node.key);
+        let editedNode = this.findNodeByKey(newNodes, props.key);
         editedNode.data.status = value
         this.setState({
             nodes: newNodes
         });
-        this.rowClassName(props)
     }
 
     // sizeTemplate(node) {
@@ -125,14 +134,17 @@ class DataGrid extends Component {
     // }
     //<div style={this.sizeTemplate}></div>
 
+    handleClick(node) {
+        console.log('From handleClick()', node);
+      }
+
     actionTemplate(node, column) {
         let keys = node.key.split('-')
         return <div hidden={keys.length<4}  >
             <ButtonGroup>
-                <Button color="success" className="btn-labeled" > 
-                {/* onClick={(e) => this.onRefreshStatus(node, 'confirmed')} */}
+                <Button color="success" className="btn-labeled" onClick={() => this.onRefreshStatus(node,'confirmed')} >
                     <span className="btn-md"><i className="fa fa-check"></i></span></Button>
-                <Button color="danger" className="btn-labeled" >
+                <Button color="danger" className="btn-labeled" onClick={() => this.onRefreshStatus(node,'rejected')} >
                     <span className="btn-md"><i className="fa fa-times"></i></span></Button>
             </ButtonGroup>
         </div>;
@@ -159,20 +171,40 @@ class DataGrid extends Component {
                         <p>Incell editing provides a quick and user friendly way to manipulate data.</p>
                     </div>
                 </div>
-                <div className="table table-bordered content-section implementation">
-                    <TreeTable value={this.state.nodes} expandedKeys={this.state.expandedKeys} tableClassName="table"
+                <div className="table table-bordered content-section implementation react-grid-Header">
+                    <TreeTable value={this.state.nodes} expandedKeys={this.state.expandedKeys} tableClassName="table bg-gray-dark"
                         rowClassName={this.rowClassName} scrollable onToggle={e => this.setState({ expandedKeys: e.value })}
-                        responsive>
+                        responsive >
                         <Column field="grupoccconta" header="Grupo / CC / Conta" expander style={{ width: '200px' }} />
                         <Column field="item" header="Item" style={{ width: '70px' }} />
                         <Column field="jan" header="Jan" style={{ width: '70px' }} />
-                        <Column field="janalt" header="Jan Aterado" editor={e => this.valueEditor(e)} style={{ width: '70px' }} />
+                        <Column field="janalt" header="Jan Alt" editor={this.valueEditor} style={{ width: '70px' }} />
                         <Column field="fev" header="Fev" style={{ width: '70px' }} />
-                        <Column field="fevalt" header="Fev Aterado" editor={this.valueEditor} style={{ width: '70px' }} />
-                        <Column body={this.actionTemplate} style={{ textAlign: 'center', width: '8em' }} />
+                        <Column field="fevalt" header="Fev Alt" editor={this.valueEditor} style={{ width: '70px' }} />
+                        <Column field="mar" header="Mar" style={{ width: '70px' }} />
+                        <Column field="maralt" header="Mar Alt" editor={this.valueEditor} style={{ width: '70px' }} />
+                        <Column field="abr" header="Abr" style={{ width: '70px' }} />
+                        <Column field="abralt" header="Abr Alt" editor={this.valueEditor} style={{ width: '70px' }} />
+                        <Column field="mai" header="Mai" style={{ width: '70px' }} />
+                        <Column field="maialt" header="Mai Alt" editor={this.valueEditor} style={{ width: '70px' }} />
+                        <Column field="jun" header="Jun" style={{ width: '70px' }} />
+                        <Column field="junalt" header="Jun Alt" editor={this.valueEditor} style={{ width: '70px' }} />
+                        <Column field="jul" header="Jul" style={{ width: '70px' }} />
+                        <Column field="julalt" header="Jul Alt" editor={this.valueEditor} style={{ width: '70px' }} />
+                        <Column field="ago" header="Ago" style={{ width: '70px' }} />
+                        <Column field="agoalt" header="Ago Alt" editor={this.valueEditor} style={{ width: '70px' }} />
+                        <Column field="set" header="Set" style={{ width: '70px' }} />
+                        <Column field="setalt" header="Set Alt" editor={this.valueEditor} style={{ width: '70px' }} />
+                        <Column field="out" header="Out" style={{ width: '70px' }} />
+                        <Column field="outalt" header="Out Alt" editor={this.valueEditor} style={{ width: '70px' }} />
+                        <Column field="nov" header="Nov" style={{ width: '70px' }} />
+                        <Column field="novalt" header="Nov Alt" editor={this.valueEditor} style={{ width: '70px' }} />
+                        <Column field="dez" header="Dez" style={{ width: '70px' }} />
+                        <Column field="dezalt" header="Dez Alt" editor={this.valueEditor} style={{ width: '70px' }} />
+                        <Column body={(e) => this.actionTemplate(e)} style={{ textAlign: 'center', width: '8em' }} />
                     </TreeTable>
-                    <div className="content-heading">
-                    {/* <div>Dashboard
+                    {/* <div className="content-heading">
+                    <div>Dashboard
                         <small><Trans i18nKey='dashboard.WELCOME'></Trans></small>
                     </div> */}
                     { /* START Language list */ }
@@ -188,7 +220,7 @@ class DataGrid extends Component {
                         </Dropdown>
                     </div> */}
                     { /* END Language list */ }
-                    </div>
+                    {/* </div> */}
                 </div>
             </div>
         )
