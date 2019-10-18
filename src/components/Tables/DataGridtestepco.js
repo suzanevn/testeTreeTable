@@ -200,7 +200,7 @@ console.log('props ini ',props)
                     </div>
                 </div>
                 <Modal isOpen={this.state.modal} toggle={this.toggleModal}>
-                    <ModalHeader toggle={this.toggleModal}><Trans i18nKey='titles.justification'></Trans></ModalHeader>
+                    <ModalHeader toggle={this.toggleModal}><Trans i18nKey='dashboard.justification'></Trans></ModalHeader>
                     <ModalBody>
                         <Card body>
                             <textarea rows="6" className="form-control note-editor"></textarea>

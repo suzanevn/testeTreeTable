@@ -15,9 +15,34 @@ export class NodeService {
     }
 
     convertJson(){
-        var json = axios.get('./data/dados.json').then(res => res.data.root);
-        console.log('json ', json)
-        console.log('stringfy',JSON.stringify(json))
+        //this.nodeservice.getTreeTableNodes().then(data => this.setState({ nodes: data }));
+        //var resp;
+        return axios.get('./data/dados.json').then(res => res.data.root);
+        //var json = axios.get('./data/dados.json').then(res => res.data.root);
+        // console.log('json ', json)
+        // console.log('json data', json.data)
+        // var arr = [];
+        // Object.keys(json).forEach(function(key) {
+        //     console.log('key', key);
+        //   arr.push(json[key]);
+        // });
+        // console.log('array', arr)
+        // json.then(data => (
+        //     {
+        //       list: data.map((it) => (
+        //         {
+        //           resp: it
+        //         }
+        //       ))
+        //     }
+        //   )).then(result => resp(
+        //     {
+        //       resp: result.list
+        //     })
+        //   )
+        
+
+        //console.log('stringfy',JSON.stringify(json))
         // JSON.parse('{"1": 1, "2": 2, "3": {"4": 4, "5": {"6": 6}}}', (key, value) => {
         //     console.log(key); // mostra o nome da propriedade atual, o último é "".
         //     console.log(value);     // retorna o valor da propriedade inalterada.
