@@ -29,6 +29,7 @@ console.log('props ini ',props)
         //this.requiredValidator = this.requiredValidator.bind(this);
         this.rowClassName = this.rowClassName.bind(this);
         this.onRefreshStatus = this.onRefreshStatus.bind(this);
+        this.criarSubPasta = this.criarSubPasta.bind(this);
     }
 
     forJson(){
@@ -36,21 +37,90 @@ console.log('props ini ',props)
         let noarray = this.state.nodesSemFormat
         let ccant='';
         //let novoarray = [];
-        for(let i=0; i<noarray.length;i++){
-            if(noarray[i].cc!=='' && noarray[i].cc!==ccant){
-                
+        // for(let i=0; i<noarray.length;i++){
+       
+        // }
+        var myMap = new Map();
+        var jsonarray = [];
+        // jsonarray.push({
+        //     root: []
+        // });
+        //let i=0;
+        //noarray.forEach((e)=> {
+        for(let i=0;i<noarray.length;i++){
+            console.log('e ',noarray, 'ant ',ccant)
+            if(noarray[i].cc==='' || noarray[i].cc===ccant){
+                myMap.set("cc", noarray[i].cc);
+                jsonarray.push({
+                    key: noarray[i].cc,
+                    cc: noarray[i].cc,
+                    children: [{
+                        "name": "child1"
+                      },
+                      {
+                        "name": "child2"
+                      }
+                    ]
+                });
+                console.log('criar no child')
             }else{
-
+                myMap.set("cc", noarray[i].cc);
+                jsonarray.push({
+                    key: noarray[i].cc,
+                    cc: noarray[i].cc,
+                    children: [{
+                        "name": "child1"
+                      },
+                      {
+                        "name": "child2"
+                      }
+                    ]
+                });
+                console.log('ir para proximo')
             }
             ccant=noarray[i].cc;
+           // i++;
         }
+
+        console.log("map ", myMap)
+        console.log("json resp ", jsonarray)
+
+        // let json = this.state.nodesSemFormat;
+        // json.forEach(function(obj) {
+        //     //var ul = document.createElement('ul');
+        //     //document.body.appendChild(ul);
+        //     console.log('obj ',obj)
+        //     //this.criarSubPasta(obj, ul);
+        // })
+
+        // console.log('resultado ',json)
     }
+    criarSubPasta(obj, parent) {
+        // criar <li>nome</li>
+        var nameLi = document.createElement('li'); 
+        nameLi.innerHTML = obj.name;
+        parent.appendChild(nameLi);
+      
+        // parar aqui se não houver children
+        if (!obj.children) return;
+      
+        // preparar um novo <ul></ul> para as subpastas
+        var childrenLi = document.createElement('li');
+        var ul = document.createElement('ul');
+        parent.appendChild(childrenLi);
+        childrenLi.appendChild(ul);
+        obj.children.forEach(function(child) {
+          // correr a mesma lógica recursivamente nas subpastas
+          this.criarSubPasta(child, ul);
+        });
+      }
 
 
     componentDidMount() {
         this.nodeservice.getTreeTableNodes().then(data => this.setState({ nodes: data }));
         this.nodeservice.convertJson().then(data => this.setState({ nodesSemFormat: data }, () => this.forJson()));
         
+
         let expandedKeys = { ...this.state.expandedKeys };
         //expande as colunas
         expandedKeys['0'] = true
@@ -104,6 +174,7 @@ console.log('props ini ',props)
 
     inputTextEditor(props, field) {
         //console.log('props tab index', props)
+        console.log('input ', props, field)
         this.rowClassName(props.node)
         return (
             <div>
@@ -218,30 +289,30 @@ console.log('props ini ',props)
                         <Column field="grupoccconta" header="Grupo / CC / Conta" expander style={{ width: '200px' }} />
                         <Column field="item" header="Item" style={{ width: '70px' }} />
                         <Column field="jan" header={t('titles.jan')} style={{ width: '70px' }} />
-                        <Column field="janalt" header={t('titles.janalt')} editor={this.valueEditor} style={{ width: '70px' }} />
+                        <Column field="janalt" header={t('titles.janalt')} editor={this.valueEditor} style={{ width: '70px', tabIndex:'1' }} />
                         <Column field="fev" header={t('titles.feb')} style={{ width: '70px' }} />
-                        <Column field="fevalt" header={t('titles.febalt')} editor={this.valueEditor} style={{ width: '70px' }} />
+                        <Column field="fevalt" header={t('titles.febalt')} editor={this.valueEditor} style={{ width: '70px', tabIndex:'2' }} />
                         <Column field="mar" header={t('titles.mar')} style={{ width: '70px' }} />
-                        <Column field="maralt" header={t('titles.maralt')} editor={this.valueEditor} style={{ width: '70px' }} />
+                        <Column field="maralt" header={t('titles.maralt')} editor={this.valueEditor} style={{ width: '70px', tabIndex:'3' }} />
                         <Column field="abr" header={t('titles.apr')} style={{ width: '70px' }} />
-                        <Column field="abralt" header={t('titles.apralt')} editor={this.valueEditor} style={{ width: '70px' }} />
+                        <Column field="abralt" header={t('titles.apralt')} editor={this.valueEditor} style={{ width: '70px', tabIndex:'4' }} />
                         <Column field="mai" header={t('titles.may')} style={{ width: '70px' }} />
-                        <Column field="maialt" header={t('titles.mayalt')} editor={this.valueEditor} style={{ width: '70px' }} />
+                        <Column field="maialt" header={t('titles.mayalt')} editor={this.valueEditor} style={{ width: '70px', tabIndex:'5' }} />
                         <Column field="jun" header={t('titles.jun')} style={{ width: '70px' }} />
-                        <Column field="junalt" header={t('titles.junalt')} editor={this.valueEditor} style={{ width: '70px' }} />
+                        <Column field="junalt" header={t('titles.junalt')} editor={this.valueEditor} style={{ width: '70px', tabIndex:'6' }} />
                         <Column field="jul" header={t('titles.jul')} style={{ width: '70px' }} />
-                        <Column field="julalt" header={t('titles.julalt')} editor={this.valueEditor} style={{ width: '70px' }} />
+                        <Column field="julalt" header={t('titles.julalt')} editor={this.valueEditor} style={{ width: '70px', tabIndex:'7' }} />
                         <Column field="ago" header={t('titles.aug')} style={{ width: '70px' }} />
-                        <Column field="agoalt" header={t('titles.augalt')} editor={this.valueEditor} style={{ width: '70px' }} />
+                        <Column field="agoalt" header={t('titles.augalt')} editor={this.valueEditor} style={{ width: '70px', tabIndex:'8' }} />
                         <Column field="set" header={t('titles.sep')} style={{ width: '70px' }} />
-                        <Column field="setalt" header={t('titles.sepalt')} editor={this.valueEditor} style={{ width: '70px' }} />
+                        <Column field="setalt" header={t('titles.sepalt')} editor={this.valueEditor} style={{ width: '70px', tabIndex:'9' }} />
                         <Column field="out" header={t('titles.oct')} style={{ width: '70px' }} />
-                        <Column field="outalt" header={t('titles.octalt')} editor={this.valueEditor} style={{ width: '70px' }} />
+                        <Column field="outalt" header={t('titles.octalt')} editor={this.valueEditor} style={{ width: '70px', tabIndex:'10' }} />
                         <Column field="nov" header={t('titles.nov')} style={{ width: '70px' }} />
-                        <Column field="novalt" header={t('titles.novalt')} editor={this.valueEditor} style={{ width: '70px' }} />
+                        <Column field="novalt" header={t('titles.novalt')} editor={this.valueEditor} style={{ width: '70px', tabIndex:'11' }} />
                         <Column field="dez" header={t('titles.dec')} style={{ width: '70px' }} />
-                        <Column field="dezalt" header={t('titles.decalt')} editor={this.valueEditor} style={{ width: '70px' }} />
-                        <Column body={(e) => this.actionTemplate(e)} style={{ textAlign: 'center', width: '8em' }} />
+                        <Column field="dezalt" header={t('titles.decalt')} editor={this.valueEditor} style={{ width: '70px', tabIndex:'12' }} />
+                        <Column body={(e) => this.actionTemplate(e)} style={{ textAlign: 'center', width: '8em', tabIndex:'13' }} />
                     </TreeTable>
                     <div className="content-heading">
                     <div>Dashboard
